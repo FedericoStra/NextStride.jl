@@ -15,6 +15,12 @@ Types of changes:
 - `Security` in case of vulnerabilities.
 -->
 
+## [Unreleased]
+
+## Changed
+
+- Allow the package to be precompiled by moving some code into `__init__()`.
+
 ## [0.1.0]
 
 ## Added
@@ -31,6 +37,6 @@ Types of changes:
 
 Empty project.
 
-<!-- next-url -->
+[Unreleased]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...HEAD
 [0.1.0]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...v0.1.0
 [0.0.0]: https://github.com/FedericoStra/NextStride.jl/releases/tag/v0.0.0
