@@ -19,12 +19,14 @@ Types of changes:
 
 ## Added
 
-- Functions to set the behavior of `stride(A::AbstractArray, k::Integer)`
-  for `k > ndims(A)`:
+- Functions to set the behavior of `stride(A::AbstractArray, k::Integer)` for `k > ndims(A)`:
   - `virtual_strides_return_error`,
   - `virtual_strides_return_zero`,
   - `virtual_strides_return_next_stride`,
   - `virtual_strides_call_next_stride`.
+- Function `set_virtual_strides_behavior(::VirtualStridesBehavior)` to set the behavior of
+  `stride(A::AbstractArray, k::Integer)` for `k > ndims(A)` via an instance of
+  the enumeration `VirtualStridesBehavior`.
 
 ## Changed
 

@@ -9,6 +9,8 @@ export next_stride
 # public virtual_strides_return_zero
 # public virtual_strides_return_next_stride
 # public virtual_strides_call_next_stride
+# public set_virtual_strides_behavior
+# public VirtualStridesBehavior
 
 
 """
@@ -85,7 +87,7 @@ end
     virtual_strides_return_next_stride
 
 Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
-to return the *next stride* if `k > ndims(A)`.
+to return the "next stride" if `k > ndims(A)`.
 """
 function virtual_strides_return_next_stride()
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
@@ -113,6 +115,72 @@ function virtual_strides_call_next_stride()
             return st[k]
         else
             return next_stride(A)
+        end
+    end
+end
+
+
+"""
+    VirtualStridesBehavior <: Enum
+
+# Instances
+
+- `ReturnError`
+- `ReturnZero`
+- `ReturnNextStride`
+- `Call_next_stride`
+
+# Usage
+
+Instances of this enumeration are passed to the function
+[`set_virtual_strides_behavior`](@ref) to configure the behavior of
+[`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+for `k > ndims(A)` according to this specification:
+
+- `ReturnError`: returns an error;
+- `ReturnZero`: returns `0` (use with caution!);
+- `ReturnNextStride`: returns the "next stride" of `A`;
+- `Call_next_stride`: calls [`next_stride(A)`](@ref).
+"""
+@enum VirtualStridesBehavior begin
+    ReturnError
+    ReturnZero
+    ReturnNextStride
+    Call_next_stride
+end
+
+
+"""
+    set_virtual_strides_behavior(B::VirtualStridesBehavior)
+
+Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+for `k > ndims(A)` according to the specification `B`, which must be an instance
+of the enumeration [`VirtualStridesBehavior`](@ref).
+"""
+function set_virtual_strides_behavior(B::VirtualStridesBehavior)
+    @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
+        st = strides(A) :: NTuple{N,Integer}
+        if 1 <= k && k <= N
+            return st[k]
+        else
+            $(
+                if B == ReturnError
+                    :(error("array strides: dimension must be positive"))
+                elseif B == ReturnZero
+                    :(return 0)
+                elseif B == ReturnNextStride
+                    quote
+                        sz = size(A) :: NTuple{N,Integer}
+                        # Here we are implicitly assuming that `all(sz .> 0)`,
+                        # otherwise we should put `sz .- 1` inside `abs.()`.
+                        return sum((sz .- 1) .* abs.(st); init=1)
+                    end
+                elseif B == Call_next_stride
+                    :(return next_stride(A))
+                else
+                    error("unsupported VirtualStridesBehavior")
+                end
+            )
         end
     end
 end
