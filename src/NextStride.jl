@@ -5,7 +5,9 @@ export next_stride
 # Marking items with `public` requires `VERSION >= v"1.11"`.
 # We can do so if we elevate the minimum supported Julia version.
 #
-# public virtual_strides_return_error, virtual_strides_return_zero
+# public virtual_strides_return_error
+# public virtual_strides_return_zero
+# public virtual_strides_return_next_stride
 
 
 """
@@ -73,6 +75,25 @@ function virtual_strides_return_zero()
             return st[k]
         else
             return 0
+        end
+    end
+end
+
+
+"""
+    virtual_strides_return_next_stride
+
+Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+to return the *next stride* if `k > ndims(A)`.
+"""
+function virtual_strides_return_next_stride()
+    @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
+        st = strides(A) :: NTuple{N,Integer}
+        if 1 <= k && k <= N
+            return st[k]
+        else
+            sz = size(A) :: NTuple{N,Integer}
+            return sum((sz .- 1) .* abs.(st); init=1)
         end
     end
 end

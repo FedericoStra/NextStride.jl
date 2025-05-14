@@ -23,6 +23,7 @@ Types of changes:
   for `k > ndims(A)`:
   - `virtual_strides_return_error`
   - `virtual_strides_return_zero`
+  - `virtual_strides_return_next_stride`
 
 ## Changed
 
