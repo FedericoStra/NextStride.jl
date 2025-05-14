@@ -59,8 +59,18 @@ whereas this code would return `(105, 123, -3)` without loading [`NextStride`](@
 ```@index
 ```
 
-### Documentation
+### Public
+
+#### Exported
 
 ```@autodocs
 Modules = [NextStride]
+Private = false
+```
+
+#### Non exported
+
+```@autodocs
+Modules = [NextStride]
+Public = false
 ```
