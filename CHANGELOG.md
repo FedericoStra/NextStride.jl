@@ -21,6 +21,12 @@ Types of changes:
 ## Added
 
 - Function `next_stride`.
+- Rectify the definition of `stride(A::AbstractArray, k::Integer)` to
+  - return an error if `k < 1`,
+  - return `next_stride(A)` if `k > ndims(A)`.
+- Delete the methods of `stride(A, k::Integer)` specialised for
+  - `Union{DenseArray,StridedReshapedArray,StridedReinterpretArray}`,
+  - `SubArray`.
 
 ## [0.0.0]
 
