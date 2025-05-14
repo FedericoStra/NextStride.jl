@@ -53,6 +53,7 @@ function next_stride end
 Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
 to return an error if `k > ndims(A)`.
 """
+function virtual_strides_return_error end
 function virtual_strides_return_error()
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
         st = strides(A) :: NTuple{N,Integer}
@@ -66,11 +67,12 @@ end
 
 
 """
-    virtual_strides_return_zero
+    virtual_strides_return_zero()
 
 Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
 to return `0` if `k > ndims(A)`.
 """
+function virtual_strides_return_zero end
 function virtual_strides_return_zero()
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
         st = strides(A) :: NTuple{N,Integer}
@@ -84,11 +86,12 @@ end
 
 
 """
-    virtual_strides_return_next_stride
+    virtual_strides_return_next_stride()
 
 Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
 to return the "next stride" if `k > ndims(A)`.
 """
+function virtual_strides_return_next_stride end
 function virtual_strides_return_next_stride()
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
         st = strides(A) :: NTuple{N,Integer}
@@ -103,11 +106,12 @@ end
 
 
 """
-    virtual_strides_call_next_stride
+    virtual_strides_call_next_stride()
 
 Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
 to call [`next_stride(A)`](@ref) if `k > ndims(A)`.
 """
+function virtual_strides_call_next_stride end
 function virtual_strides_call_next_stride()
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
         st = strides(A) :: NTuple{N,Integer}
@@ -157,6 +161,7 @@ Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride
 for `k > ndims(A)` according to the specification `B`, which must be an instance
 of the enumeration [`VirtualStridesBehavior`](@ref).
 """
+function set_virtual_strides_behavior end
 function set_virtual_strides_behavior(B::VirtualStridesBehavior)
     @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
         st = strides(A) :: NTuple{N,Integer}
