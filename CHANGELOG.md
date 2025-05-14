@@ -21,9 +21,10 @@ Types of changes:
 
 - Functions to set the behavior of `stride(A::AbstractArray, k::Integer)`
   for `k > ndims(A)`:
-  - `virtual_strides_return_error`
-  - `virtual_strides_return_zero`
-  - `virtual_strides_return_next_stride`
+  - `virtual_strides_return_error`,
+  - `virtual_strides_return_zero`,
+  - `virtual_strides_return_next_stride`,
+  - `virtual_strides_call_next_stride`.
 
 ## Changed
 
