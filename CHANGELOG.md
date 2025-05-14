@@ -17,6 +17,12 @@ Types of changes:
 
 ## [Unreleased]
 
+## Added
+
+- Functions to set the behavior of `stride(A::AbstractArray, k::Integer)`
+  for `k > ndims(A)`:
+  - `virtual_strides_return_error`
+
 ## Changed
 
 - Allow the package to be precompiled by moving some code into `__init__()`.
