@@ -1,0 +1,9 @@
+name = "NextStride"
+uuid = "3731ef4a-0417-4ff6-800c-39cc403a0cfc"
+authors = ["Federico Stra <stra.federico@gmail.com> and contributors"]
+desc = "Control the value returned by `stride(A, i)` when `i ∉ 1:ndims(A)`"
+license = "MIT"
+version = "0.0.0"
+
+[compat]
+julia = "1.8"
