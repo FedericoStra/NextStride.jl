@@ -16,11 +16,28 @@ export next_stride
 
 
 """
-    next_stride(A::AbstractArray)
+    next_stride(A::AbstractArray) :: Integer
 
-Compute the smallest positive stride for the first virtual axis beyond `ndims(A)` that would prevent overlap.
+Return the length (in elements, not bytes) of the shortest contiguous memory region accessed by `A`.
 
-This is the length (in elements, not bytes) of the shortest contiguous memory region accessed by `A`.
+This is the smallest positive stride which, if assigned to the first virtual axis beyond `ndims(A)`, would prevent overlap between successive arrays of the same type of `A`.
+
+For example, if `ndims(A) == 2`, we could have an array `B` with `ndims(B) == 3` such that
+`A == B[:,:,1]`; `next_stride(A)` is the smallest positive `stride(B, 3)` that guarantees that
+`B[:,:,1]` and `B[:,:,2]` do not overlap in memory.
+
+# Examples
+
+```jldoctest
+julia> a = zeros(3,5,7);
+
+julia> p = PermutedDimsArray(a, (2,3,1));
+
+julia> v = view(p, :, 7:-2:1, 3:-1:1);
+
+julia> next_stride(a), next_stride(p), next_stride(v)
+(105, 105, 105)
+```
 """
 function next_stride end
 

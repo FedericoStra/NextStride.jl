@@ -1,5 +1,5 @@
 using NextStride
-using Documenter
+using Documenter, DocumenterInterLinks
 
 DocMeta.setdocmeta!(NextStride, :DocTestSetup, :(using NextStride); recursive=true)
 
@@ -15,6 +15,11 @@ makedocs(;
     pages=[
         "Home" => "index.md",
     ],
+    plugins=[
+        InterLinks(
+            "Julia" => "https://docs.julialang.org/en/v1/"
+        )
+    ]
 )
 
 deploydocs(;
