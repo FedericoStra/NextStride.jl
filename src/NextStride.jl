@@ -29,7 +29,7 @@ function next_stride end
 #
 # Here we are relying on the assumption `all(size(A) .> 0)`,
 # otherwise we should put `size(A) .- 1.` inside `abs.()`.
-@inline next_stride(A::AbstractArray) = sum((size(A) .- 1) .* abs.(strides(A)); init=1)
+@inline next_stride(A::AbstractArray)::Integer = sum((size(A) .- 1) .* abs.(strides(A)); init=1)
 
 
 # <https://github.com/JuliaLang/julia/blob/v1.11.5/base/abstractarray.jl#L594-L604>
@@ -47,7 +47,7 @@ function next_stride end
 #     return s  # == sum(size(A) .* strides(A))
 # end
 # ```
-function Base.stride(A::AbstractArray{T,N}, k::Integer) where {T,N}
+function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
     # Both `size(A)` and `strides(A)` are documented to return a tuple;
     # it is not specified whether the elements should be `Int`,
     # so we relax it to be just `Integer` in the type assertions below.
