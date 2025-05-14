@@ -2,6 +2,11 @@ module NextStride
 
 export next_stride
 
+# Marking items with `public` requires `VERSION >= v"1.11"`.
+# We can do so if we elevate the minimum supported Julia version.
+#
+# public virtual_strides_return_error
+
 
 """
     next_stride(A::AbstractArray) :: Integer
@@ -35,6 +40,24 @@ function next_stride end
 # Here we are relying on the assumption `all(size(A) .> 0)`,
 # otherwise we should put `size(A) .- 1.` inside `abs.()`.
 @inline next_stride(A::AbstractArray)::Integer = sum((size(A) .- 1) .* abs.(strides(A)); init=1)
+
+
+"""
+    virtual_strides_return_error()
+
+Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+to return an error if `k > ndims(A)`.
+"""
+function virtual_strides_return_error()
+    @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
+        st = strides(A) :: NTuple{N,Integer}
+        if 1 <= k && k <= N
+            return st[k]
+        else
+            error("array strides: dimension must be positive")
+        end
+    end
+end
 
 
 function __init__()
