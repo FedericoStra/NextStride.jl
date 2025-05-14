@@ -1,3 +1,3 @@
 var documenterSearchIndex = {"docs":
-[{"location":"#NextStride","page":"Home","title":"NextStride","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"Documentation for NextStride.","category":"page"},{"location":"","page":"Home","title":"Home","text":"","category":"page"}]
+[{"location":"#NextStride","page":"Home","title":"NextStride","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"Documentation for NextStride.","category":"page"},{"location":"","page":"Home","title":"Home","text":"","category":"page"},{"location":"#NextStride.next_stride","page":"Home","title":"NextStride.next_stride","text":"next_stride(A::AbstractArray)\n\nCompute the smallest positive stride for the first virtual axis beyond ndims(A) that would prevent overlap.\n\nThis is the length (in elements, not bytes) of the shortest contiguous memory region accessed by A.\n\n\n\n\n\n","category":"function"}]
 }
