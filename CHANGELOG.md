@@ -15,8 +15,17 @@ Types of changes:
 - `Security` in case of vulnerabilities.
 -->
 
+<!-- next-header -->
+## [Unreleased]
+
+## Added
+
+- Function `next_stride`.
+
 ## [0.0.0]
 
 Empty project.
 
+<!-- next-url -->
+[Unreleased]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...HEAD
 [0.0.0]: https://github.com/FedericoStra/NextStride.jl/releases/tag/v0.0.0
