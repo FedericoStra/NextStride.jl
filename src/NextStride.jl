@@ -65,27 +65,31 @@ function Base.stride(A::AbstractArray{T,N}, k::Integer) where {T,N}
 end
 
 
+# Delete the following methods.
+#
 # <https://github.com/JuliaLang/julia/blob/v1.11.5/base/reinterpretarray.jl#L196-L197>
 #
 # ```julia
 # stride(A::Union{DenseArray,StridedReshapedArray,StridedReinterpretArray}, k::Integer) =
 #     k ≤ ndims(A) ? strides(A)[k] : length(A)
 # ```
-Base.delete_method(methods(
-    stride,
-    Tuple{Union{DenseArray,Base.StridedReshapedArray,Base.StridedReinterpretArray}, Integer}
-)[1])
-
-
+#
 # <https://github.com/JuliaLang/julia/blob/v1.11.5/base/subarray.jl#L430>
 #
 # ```julia
 # stride(V::SubArray, d::Integer) = d <= ndims(V) ? strides(V)[d] : strides(V)[end] * size(V)[end]
 # ```
-Base.delete_method(methods(
-    stride,
-    Tuple{SubArray, Integer}
-)[1])
+
+for A in (Union{DenseArray,Base.StridedReshapedArray,Base.StridedReinterpretArray}, SubArray)
+    m = methods(stride, Tuple{A, Integer})[1]
+    if m.module != Base
+        error("the method\n$(m)\nis not defined in module `Base`.")
+    elseif m.sig != Tuple{typeof(stride), A, Integer}
+        error("the method\n$(m)\ndoes not have the expected signature.")
+    else
+        Base.delete_method(m)
+    end
+end
 
 
 end # module NextStride
