@@ -8,6 +8,7 @@ export next_stride
 # public virtual_strides_return_error
 # public virtual_strides_return_zero
 # public virtual_strides_return_next_stride
+# public virtual_strides_call_next_stride
 
 
 """
@@ -94,6 +95,24 @@ function virtual_strides_return_next_stride()
         else
             sz = size(A) :: NTuple{N,Integer}
             return sum((sz .- 1) .* abs.(st); init=1)
+        end
+    end
+end
+
+
+"""
+    virtual_strides_call_next_stride
+
+Set the behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+to call [`next_stride(A)`](@ref) if `k > ndims(A)`.
+"""
+function virtual_strides_call_next_stride()
+    @eval function Base.stride(A::AbstractArray{T,N}, k::Integer)::Integer where {T,N}
+        st = strides(A) :: NTuple{N,Integer}
+        if 1 <= k && k <= N
+            return st[k]
+        else
+            return next_stride(A)
         end
     end
 end
