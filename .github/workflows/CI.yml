@@ -24,10 +24,11 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - 'lts'
           - 'min'
-          - 'nightly'
+          - 'lts'
+          - '1'
           - 'pre'
+          - 'nightly'
         os:
           - ubuntu-latest
         arch:
