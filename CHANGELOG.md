@@ -15,7 +15,7 @@ Types of changes:
 - `Security` in case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [0.2.0]
 
 ## Added
 
@@ -48,6 +48,6 @@ Types of changes:
 
 Empty project.
 
-[Unreleased]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...HEAD
+[0.2.0]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...v0.2.0
 [0.1.0]: https://github.com/FedericoStra/NextStride.jl/compare/v0.0.0...v0.1.0
 [0.0.0]: https://github.com/FedericoStra/NextStride.jl/releases/tag/v0.0.0
