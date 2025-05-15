@@ -6,6 +6,14 @@ CurrentModule = NextStride
 
 Documentation for [FedericoStra/NextStride.jl](https://github.com/FedericoStra/NextStride.jl).
 
+!!! note
+
+    This is an *experimental* project to work around the issue
+    <https://github.com/JuliaLang/julia/issues/58403>.
+
+    It redefines methods in the [`Base`](@extref ) module and may not be safe
+    for space travel.
+
 By default, the [`stride(A, k::Integer)`](@extref Base.stride) function comes with three methods,
 which differ in behavior when `k > ndims(A)`, specialized for arrays `A` of type:
 
