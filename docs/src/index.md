@@ -77,6 +77,57 @@ Notice that with option (3) the functions [`stride`](@extref Base.stride) and
 separately), whereas with option (4) they become coupled (adding methods to
 [`next_stride`](@ref) will affect the value returned by [`stride`](@extref Base.stride)).
 
+!!! warning
+    Options (1) and especially (2) may break stuff!
+
+Option (1) is always "safe" to use, because the worse it can do is throw an error if
+some code tries to call [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+with `k > ndims(A)`.
+
+On the other hand, option (2) *might not be safe* because there is code in Julia's base
+libraries that accidentally relies on
+[`stride(A::AbstractArray, k::Integer)`](@extref Base.stride) returning a non-zero value
+for `k > ndims(A)`.
+One such example is [`LinearAlgebra.mul!(y, A, x)`](@extref LinearAlgebra.mul!) when
+called with a vector as second argument instead of a matrix. It treats it as a 1-column
+matrix and calls `stride(A, 2)` expecting a non-zero stride which is valid to pass to the
+underlying [`LinearAlgebra.BLAS.gemv!`](@extref) function (BLAS `gemv` functions
+explicitly require that `lda` must be positive). Setting the behavior of `stride(A, 2)` to
+return `0` instead may result in code that *appears* to be working, but it is definitely
+not correct.
+
+```jldoctest
+julia> using LinearAlgebra
+
+julia> mul!(zeros(3), [1., 2., 3.], [10.])
+3-element Vector{Float64}:
+ 10.0
+ 20.0
+ 30.0
+
+julia> using NextStride
+
+julia> mul!(zeros(3), [1., 2., 3.], [10.]) # no problems here
+3-element Vector{Float64}:
+ 10.0
+ 20.0
+ 30.0
+
+julia> NextStride.set_virtual_strides_behavior(NextStride.ReturnZero)
+
+julia> mul!(zeros(3), [1., 2., 3.], [10.]) # still *appears* to work correctly...
+3-element Vector{Float64}:
+ 10.0
+ 20.0
+ 30.0
+
+julia> NextStride.set_virtual_strides_behavior(NextStride.ReturnError)
+
+julia> mul!(zeros(3), [1., 2., 3.], [10.])
+ERROR: array strides: dimension out of range
+Stacktrace:
+```
+
 ## API
 
 ### Index
