@@ -60,6 +60,23 @@ julia> stride(a, 4), stride(p, 4), stride(v, 4)
 
 whereas this code would return `(105, 123, -3)` without loading [`NextStride`](@ref).
 
+### Configuring the behavior
+
+The behavior of [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
+for `k > ndims(A)` can be configured by calling the function
+[`set_virtual_strides_behavior(B::VirtualStridesBehavior)`](@ref)
+with one of the following instances of the enumeration [`VirtualStridesBehavior`](@ref):
+
+1. `ReturnError`: returns an error;
+2. `ReturnZero`: returns `0` (use with caution!);
+3. `ReturnNextStride`: returns the "next stride" of `A`;
+4. `Call_next_stride`: calls [`next_stride(A)`](@ref).
+
+Notice that with option (3) the functions [`stride`](@extref Base.stride) and
+[`next_stride`](@ref) remain independent of one another (and can therefore be specialized
+separately), whereas with option (4) they become coupled (adding methods to
+[`next_stride`](@ref) will affect the value returned by [`stride`](@extref Base.stride)).
+
 ## API
 
 ### Index

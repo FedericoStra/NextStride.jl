@@ -141,10 +141,17 @@ Instances of this enumeration are passed to the function
 [`stride(A::AbstractArray, k::Integer)`](@extref Base.stride)
 for `k > ndims(A)` according to this specification:
 
-- `ReturnError`: returns an error;
-- `ReturnZero`: returns `0` (use with caution!);
-- `ReturnNextStride`: returns the "next stride" of `A`;
-- `Call_next_stride`: calls [`next_stride(A)`](@ref).
+1. `ReturnError`: returns an error;
+2. `ReturnZero`: returns `0` (use with caution!);
+3. `ReturnNextStride`: returns the "next stride" of `A`;
+4. `Call_next_stride`: calls [`next_stride(A)`](@ref).
+
+Notice that with option (3) the functions [`stride`](@extref Base.stride) and
+[`next_stride`](@ref) remain independent of one another (and can therefore be
+specialized separately), whereas with option (4) they become coupled (adding
+methods to [`next_stride`](@ref) will affect the value returned by
+[`stride`](@extref Base.stride)).
+
 """
 @enum VirtualStridesBehavior begin
     ReturnError
