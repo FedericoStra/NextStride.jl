@@ -60,7 +60,7 @@ function virtual_strides_return_error()
         if 1 <= k && k <= N
             return st[k]
         else
-            error("array strides: dimension must be positive")
+            error("array strides: dimension out of range")
         end
     end
 end
@@ -177,7 +177,7 @@ function set_virtual_strides_behavior(B::VirtualStridesBehavior)
         else
             $(
                 if B == ReturnError
-                    :(error("array strides: dimension must be positive"))
+                    :(error("array strides: dimension out of range"))
                 elseif B == ReturnZero
                     :(return 0)
                 elseif B == ReturnNextStride
